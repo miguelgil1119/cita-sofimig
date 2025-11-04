@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Invitación JetSet</title>
+  <style>
+    :root{
+      --bg:#eaf4ff;
+      --card:#ffffff;
+      --accent:#1a73e8;
+      --text:#04203a;
+    }
+    body{
+      margin:0;
+      font-family:"Helvetica Neue", Arial, sans-serif;
+      background:linear-gradient(180deg,var(--bg),#d8ecff 60%);
+      color:var(--text);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      min-height:100vh;
+      padding:20px;
+    }
+    .card{
+      background:var(--card);
+      width:100%;
+      max-width:520px;
+      border-radius:14px;
+      box-shadow:0 8px 30px rgba(4,32,58,0.12);
+      padding:28px;
+      text-align:center;
+      border:1px solid rgba(26,115,232,0.08);
+    }
+    .logo{
+      display:inline-block;
+      background:linear-gradient(135deg,var(--accent),#5aa0ff);
+      color:white;
+      font-weight:700;
+      padding:8px 14px;
+      border-radius:999px;
+      letter-spacing:1px;
+      margin-bottom:18px;
+      font-size:14px;
+    }
+    h1{
+      margin:6px 0 6px;
+      font-size:22px;
+    }
+    p{
+      color:#264a68;
+      margin:12px 0 24px;
+      font-size:16px;
+    }
+    form{
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+      text-align:left;
+    }
+    label{
+      font-weight:600;
+      color:#264a68;
+    }
+    input, select{
+      padding:10px 12px;
+      border-radius:8px;
+      border:1px solid rgba(26,115,232,0.2);
+      font-size:15px;
+      width:100%;
+      box-sizing:border-box;
+    }
+    button{
+      border:0;
+      padding:12px 22px;
+      border-radius:10px;
+      cursor:pointer;
+      font-weight:600;
+      font-size:15px;
+      background:var(--accent);
+      color:white;
+      box-shadow:0 6px 18px rgba(26,115,232,0.18);
+      transition:all 0.2s ease;
+      align-self:center;
+      margin-top:8px;
+    }
+    button:hover{
+      transform:scale(1.03);
+      box-shadow:0 8px 22px rgba(26,115,232,0.24);
+    }
+    .success-message{
+      display:none;
+      background:rgba(26,115,232,0.08);
+      border-left:4px solid var(--accent);
+      color:var(--text);
+      padding:12px;
+      margin-top:16px;
+      border-radius:8px;
+      font-size:15px;
+      text-align:center;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="logo">JETSET</div>
+    <h1>Invitación a una cita</h1>
+    <p>Te invito a una cita este <strong>sábado a las 8:00 p.m.</strong>. Completa este formulario para confirmar 💙</p>
+
+    <form id="jetsetForm" action="https://formspree.io/f/xyzbqdan" method="POST">
+      <label for="nombre">Nombre</label>
+      <input type="text" id="nombre" name="nombre" required>
+
+      <label for="apellido">Apellido</label>
+      <input type="text" id="apellido" name="apellido" required>
+
+      <label for="acepta">¿Aceptas la cita?</label>
+      <select id="acepta" name="acepta" required>
+        <option value="">Selecciona una opción</option>
+        <option value="Sí">Sí</option>
+        <option value="No">No</option>
+      </select>
+
+      <button type="submit">Enviar respuesta</button>
+    </form>
+
+    <div class="success-message" id="successMsg">
+      Gracias, tu respuesta fue enviada 💙
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById('jetsetForm');
+    const successMsg = document.getElementById('successMsg');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = new FormData(form);
+      const res = await fetch(form.action, {
+        method: form.method,
+        body: formData,
+        headers: { 'Accept': 'application/json' }
+      });
+      if (res.ok) {
+        form.reset();
+        successMsg.style.display = 'block';
+      } else {
+        alert('Hubo un problema al enviar. Intenta nuevamente.');
+      }
+    });
+  </script>
+</body>
+</html>
